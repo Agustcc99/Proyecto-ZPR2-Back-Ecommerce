@@ -1,3 +1,6 @@
+//Express busca el middleware de errores que tiene esta firma:
+//(err, req, res, next)//////
+
 const errorHandler = (err, req, res, next) => {
     console.error("Error capturado: ", err);
   

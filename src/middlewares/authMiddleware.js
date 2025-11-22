@@ -1,18 +1,20 @@
 const jtw = require('jsonwebtoken');
 
+//asegurar que cada solicitud a una ruta protegida venga de un usuario autenticado
 const authenticationToken = (req, res, next) => {
 
-    // Tomamos el header "Authorization" del request
+    // Captura del Header Authorization
     const authHeader = req.headers["authorization"];
     
-    //Si NO hay header Authorization, significa que el cliente no mandó token
+    //¿Existe el Header?
     if (!authHeader) {
         return res.status(401).json({ message: "Token no proporcionado" });
     }
 
+    //separacion del bearer y token
     const [scheme, token] = authHeader.split(" ");
 
-    //Verificamos que el esquema sea Bearer
+    //¿Formato Correcto?
     if (scheme !== "Bearer") {
         return res.status(401).json({ message: "Formato de token NO valido" });
     }
@@ -28,6 +30,7 @@ const authenticationToken = (req, res, next) => {
         }; // Guardamos el payload en req.user para usarlo
 
         next(); // Pasamos al siguiente middleware o ruta
+
     } catch (error) {
         // Si verify lanza error, el token es inválido o está vencido
         console.error("Error al verificar el token: ", error);
@@ -47,3 +50,6 @@ module.exports = {authenticationToken};
 
 *Si algo falla corta la cadena con un res.status(401).
  */
+/*
+
+*/

@@ -17,7 +17,7 @@ const getProducts = async (req, res) => {
 // GET /api/products/:id////////
 const getProductById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params; //Trae id del producto
 
     const prod = await Product.findById(id);
 
@@ -25,6 +25,7 @@ const getProductById = async (req, res) => {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
     res.json(prod);
+
   } catch (error) {
     console.error("Error al obtener producto:", error);
     res.status(500).json({ message: "Error al obtener producto" });
@@ -37,7 +38,7 @@ const createProduct = async (req, res) => {
   try {
     let { name, description, price, stock, image } = req.body;
 
-    // Validación básica: nombre, precio y stock
+    // validacion basica nombre, precio y stock
     if (!name || typeof name !== "string") {
       return res.status(400).json({ message: "El nombre es obligatorio" });
     }
@@ -46,18 +47,21 @@ const createProduct = async (req, res) => {
     price = Number(price);
     stock = Number(stock);
 
+    //validacion precio
     if (Number.isNaN(price) || price < 0) {
       return res.status(400).json({
         message: "El precio es obligatorio y debe ser un número mayor o igual a 0",
       });
     }
 
+    //validacion stock
     if (Number.isNaN(stock) || stock < 0) {
       return res.status(400).json({
         message: "El stock es obligatorio y debe ser un número mayor o igual a 0",
       });
     }
 
+    // Crear el producto
     const newProduct = await Product.create({
       name,
       description,
@@ -67,6 +71,7 @@ const createProduct = async (req, res) => {
     });
 
     res.status(201).json(newProduct);
+
   } catch (error) {
     console.error("Error al crear producto:", error);
     res
@@ -79,16 +84,17 @@ const createProduct = async (req, res) => {
 // PUT /api/products/:id ////////Protegida
 const updateProduct = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params; //id de la url
     const { name, description, price, stock, image, active } = req.body;
 
-    const prod = await Product.findById(id);
+    const prod = await Product.findById(id); //buscar producto por id
 
+    // Si no existe
     if (!prod) {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
 
-    // Actualizar campos si vienen en el body
+    // Actualizar campos si vienen en el body, lo otro no lo toca
     if (name !== undefined) prod.name = name;
     if (description !== undefined) prod.description = description;
     if (price !== undefined) prod.price = price;
@@ -98,6 +104,7 @@ const updateProduct = async (req, res) => {
 
     await prod.save();
     res.json(prod);
+
   } catch (error) {
     console.error("Error al actualizar producto:", error);
     res.status(500).json({ message: "Error al actualizar producto" });
@@ -112,14 +119,17 @@ const deleteProduct = async (req, res) => {
 
     const prod = await Product.findById(id);
 
+    // Si no existe o ya esta inactivo
     if (!prod?.active) {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
 
+    //No lo elimina, sino que queda en active(false)
     prod.active = false;
     await prod.save();
 
     res.json({ message: "Producto eliminado correctamente" });
+
   } catch (error) {
     console.error("Error al eliminar producto:", error);
     res.status(500).json({ message: "Error al eliminar producto" });

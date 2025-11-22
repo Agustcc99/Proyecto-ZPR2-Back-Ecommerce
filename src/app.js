@@ -17,11 +17,12 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.json({ message: "E-Commerce API funcionando" });
 });
-// test
+// Ruta test
 app.get("/test", (req, res) => {
-  res.json({ message: "Orders router OK" });
+  res.json({ message: "Orders router Andando" });
 });
 
+//RUTAS/////////
 // Rutas de productos
 app.use("/api/products", productsRouter);
 // Rutas de autenticación

@@ -1,13 +1,13 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt'); //Hash
+const jwt = require('jsonwebtoken'); //Token
 const User = require('../models/User');
 
-////////////////////// Registro de usuario/////////////////////////////////////////
+////////////////////// Registro de usuario///////////////////////////////
 //// POST /api/auth/register /////////
 
 const register = async (req, res) => {
     try{
-        const { name, email, password, role } = req.body; //destructuring
+        const { name, email, password, role } = req.body; //Extraer datos
         //Validaciones basicas
         if(!name || !email || !password){
             return res.status(400).json({ message: 'Faltan datos obligatorios' });
@@ -51,11 +51,12 @@ const register = async (req, res) => {
 //////////////////////////////////////////////
 //              Login de usuario            //
 /////////////////////////////////////////////
+
 /////POST /api/auth/login ///////
 
 const login = async (req, res) => {
     try{
-        // Tomamos email y password del body de la petición
+        // Tomamos email y password del body
         const { email, password } = req.body;
 
         //Validaciones basicas
@@ -83,7 +84,7 @@ const login = async (req, res) => {
         //payload: info del usuario
         //process.env.JWT_SECRET: clave secreta en el .env
         //expiresIn: duración del token
-        const token = jwt.sign(payload, process.env.JWT_SECRET,{  //Se firma con la clave secreta
+        const token = jwt.sign(payload, process.env.JWT_SECRET,{ 
             expiresIn: '1h' //Expira en una hora
         });
 

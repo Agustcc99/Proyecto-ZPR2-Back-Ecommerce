@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+//Componente anidado
 const orderItemSchema = new mongoose.Schema(
   {
     product: {
@@ -58,10 +59,10 @@ module.exports = Order;
 // Esquema Pedidos
 /**
  * user: referencia al User que hizo el pedido
- * items: array de objetos:
- *      product, 
- *      quantity, 
- *      price
+ * items array de objetos:
+ * product
+ * quantity
+ * price
  * status: pendiente, enviado, cancelado
  * total: total del pedido
  */

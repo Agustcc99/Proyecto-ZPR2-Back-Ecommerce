@@ -1,4 +1,5 @@
-// Recibe una lista de roles permitidos
+//Recibe una lista de roles permitidos
+//Función de Alto Orden
 const authorizeRoles = (...rolesPermitidos) => {
     // Devolvemos un middleware que se ejecutará DESPUÉS de authenticationToken
     return (req, res, next) => {
@@ -20,3 +21,10 @@ const authorizeRoles = (...rolesPermitidos) => {
     };
 };
 module.exports = { authorizeRoles };
+
+/*
+Su función es establecer qué tipo de usuario 
+segun su rol: cliente|administrador
+tiene permitido acceder a una ruta específica
+Se usa despues de que el usuario a sido autenticado
+*/ 
